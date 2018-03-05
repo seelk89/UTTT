@@ -38,35 +38,34 @@ public class BottyMcBotFace implements IBot
     {
 
         //Find macroboard to play in
-        for (int i = 0; i < 81; i++)
+        for (int[] move : preferredMovesFirstSet)
         {
-            int[][] set = preferredMovesFirstSet;
-            
-            if(i == 6)
+            if (state.getField().getMacroboard()[move[0]][move[1]].equals(IField.AVAILABLE_FIELD))
             {
-                set = preferredMovesSecondSet;
-            }
-            
-            for (int[] move : set)
-            {
-                if (state.getField().getMacroboard()[move[0]][move[1]].equals(IField.AVAILABLE_FIELD))
+                int[][] set = preferredMovesFirstSet;
+                
+                //System.out.println(state.getMoveNumber());
+                //System.out.println(state.getRoundNumber());
+                //System.out.println(state.getField().getAvailableMoves());
+                
+                if(state.getField().getMacroboard()[1][0].equals(IField.AVAILABLE_FIELD))
                 {
-                    //find move to play
-                    for (int[] selectedMove : set)
-                    {
-                        int x = move[0] * 3 + selectedMove[0];
-                        int y = move[1] * 3 + selectedMove[1];
-                        if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
-                        {
-                            return new Move(x, y);
-                        }
-                    }
-                } else 
-                {
-                    System.out.println("System failure");
+                    set = preferredMovesSecondSet;
+                    System.out.println("Second set");
                 }
-            } 
-        }
+                
+                //find move to play
+                for (int[] selectedMove : set)
+                {
+                    int x = move[0] * 3 + selectedMove[0];
+                    int y = move[1] * 3 + selectedMove[1];
+                    if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
+                    {
+                        return new Move(x, y);
+                    }
+                }
+            }
+        } 
         //NOTE: Something failed, just take the first available move I guess!
         return state.getField().getAvailableMoves().get(0);
     }
