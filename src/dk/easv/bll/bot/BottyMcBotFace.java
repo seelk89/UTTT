@@ -16,13 +16,12 @@ import dk.easv.bll.move.Move;
  */
 public class BottyMcBotFace implements IBot
 {
-
     private static final String BOTNAME = "BottyMcBotFace";
     // Moves {row, col} in order of preferences. {0, 0} at top-left corner
     private int[][] preferredMovesFirstSet =
     {
-        {0, 0}, {2, 2}, {1, 1},
-        {0, 2}, {2, 0}, {0, 1}, 
+        {0, 0}, {0, 1}, {1, 1},
+        {0, 2}, {2, 0}, {2, 2}, 
         {2, 1}, {1, 0}, {1, 2}
     };
     
@@ -48,6 +47,8 @@ public class BottyMcBotFace implements IBot
                 //System.out.println(state.getRoundNumber());
                 //System.out.println(state.getField().getAvailableMoves());
                 
+                checkWin(state);
+                
                 if(state.getField().getMacroboard()[1][0].equals(IField.AVAILABLE_FIELD))
                 {
                     set = preferredMovesSecondSet;
@@ -68,6 +69,107 @@ public class BottyMcBotFace implements IBot
         } 
         //NOTE: Something failed, just take the first available move I guess!
         return state.getField().getAvailableMoves().get(0);
+    }
+    
+    private IMove checkWin(IGameState state)
+    {
+        int player = state.getMoveNumber() % 2;
+        int microBoardX = getMacroBoardX(state) * 3;
+        int microBoardY = getMacroBoardY(state) * 3;
+
+        //System.out.println(microBoardX);
+        //System.out.println(microBoardY);
+        
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                //System.out.println(state.getField().getBoard()[microBoardX + i][microBoardY + j]);
+                //checking for winable squares in the X lines
+                if(state.getField().getBoard()[microBoardX][j + microBoardY].equals(player) &&
+                        state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(player))
+                {
+                    return new Move(microBoardX + 2, j + microBoardY);
+                }
+                
+                if(state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(player) &&
+                        state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(player))
+                {
+                    return new Move(microBoardX, j + microBoardY);
+                }
+                
+                if(state.getField().getBoard()[microBoardX][j + microBoardY].equals(player) &&
+                        state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(player))
+                {
+                    return new Move(microBoardX + 1, j + microBoardY);
+                }
+                
+                //checking for winable squares in the Y lines
+                if(state.getField().getBoard()[i + microBoardX][microBoardY].equals(player) &&
+                        state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(player))
+                {
+                    return new Move(microBoardX, j + microBoardY + 2);
+                }
+                
+                if(state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(player) &&
+                        state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(player))
+                {
+                    return new Move(microBoardX, j + microBoardY);
+                }
+                
+                if(state.getField().getBoard()[i + microBoardX][microBoardY].equals(player) &&
+                        state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(player))
+                {
+                    return new Move(microBoardX, j + microBoardY + 1);
+                }
+                
+                //checking for winable squares in the diagonal lines
+                if(state.getField().getBoard()[microBoardX + 2][microBoardY].equals(player) &&
+                        state.getField().getBoard()[microBoardX][microBoardY + 2].equals(player))
+                {
+                    return new Move(microBoardX + 1,microBoardY + 1);
+                }
+                
+                if(state.getField().getBoard()[microBoardX][microBoardY].equals(player) &&
+                        state.getField().getBoard()[microBoardX + 2][microBoardY + 2].equals(player))
+                {
+                    return new Move(microBoardX + 1, microBoardY + 1);
+                }
+            }
+        }
+        return state.getField().getAvailableMoves().get(0);
+    }
+    
+    private int getMacroBoardX(IGameState state)
+    {
+        int macroX = 0;
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if(state.getField().getMacroboard()[i][j].equals(IField.AVAILABLE_FIELD))
+                {
+                    macroX = i;
+                }  
+            }
+        }
+        return macroX;
+    }
+    
+    private int getMacroBoardY(IGameState state)
+    {
+        int macroY = 0;
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if(state.getField().getMacroboard()[i][j].equals(IField.AVAILABLE_FIELD))
+                {
+                    macroY = j;
+                }  
+            }
+        }
+        return macroY;
     }
 
     @Override
