@@ -43,11 +43,17 @@ public class BottyMcBotFace implements IBot
             {
                 int[][] set = preferredMovesFirstSet;
                 
-                //System.out.println(state.getMoveNumber());
-                //System.out.println(state.getRoundNumber());
-                //System.out.println(state.getField().getAvailableMoves());
+                IMove blockingMove = checkBlock(state);
+                if(blockingMove != null)
+                {
+                    return blockingMove;
+                }
                 
-                checkWin(state);
+                IMove winningMove = checkWin(state);
+                if(winningMove != null)
+                {
+                    return winningMove;
+                }    
                 
                 if(state.getField().getMacroboard()[1][0].equals(IField.AVAILABLE_FIELD))
                 {
@@ -73,72 +79,150 @@ public class BottyMcBotFace implements IBot
     
     private IMove checkWin(IGameState state)
     {
-        int player = state.getMoveNumber() % 2;
+        String player = "" + (state.getMoveNumber() % 2);
         int microBoardX = getMacroBoardX(state) * 3;
         int microBoardY = getMacroBoardY(state) * 3;
-
-        //System.out.println(microBoardX);
-        //System.out.println(microBoardY);
         
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                //System.out.println(state.getField().getBoard()[microBoardX + i][microBoardY + j]);
                 //checking for winable squares in the X lines
                 if(state.getField().getBoard()[microBoardX][j + microBoardY].equals(player) &&
-                        state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(player))
+                        state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(player) &&
+                        state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(IField.EMPTY_FIELD))
                 {
                     return new Move(microBoardX + 2, j + microBoardY);
                 }
                 
                 if(state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(player) &&
-                        state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(player))
+                        state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(player)&&
+                        state.getField().getBoard()[microBoardX][j + microBoardY].equals(IField.EMPTY_FIELD))
                 {
                     return new Move(microBoardX, j + microBoardY);
                 }
                 
                 if(state.getField().getBoard()[microBoardX][j + microBoardY].equals(player) &&
-                        state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(player))
+                        state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(player)&&
+                        state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(IField.EMPTY_FIELD))
                 {
                     return new Move(microBoardX + 1, j + microBoardY);
                 }
                 
                 //checking for winable squares in the Y lines
                 if(state.getField().getBoard()[i + microBoardX][microBoardY].equals(player) &&
-                        state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(player))
+                        state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(player)&&
+                        state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(IField.EMPTY_FIELD))
                 {
-                    return new Move(microBoardX, j + microBoardY + 2);
+                    return new Move(i + microBoardX, microBoardY + 2);
                 }
                 
                 if(state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(player) &&
-                        state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(player))
+                        state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(player)&&
+                        state.getField().getBoard()[i + microBoardX][microBoardY].equals(IField.EMPTY_FIELD))
                 {
-                    return new Move(microBoardX, j + microBoardY);
+                    return new Move(i + microBoardX, microBoardY);
                 }
                 
                 if(state.getField().getBoard()[i + microBoardX][microBoardY].equals(player) &&
-                        state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(player))
+                        state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(player)&&
+                        state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(IField.EMPTY_FIELD))
                 {
-                    return new Move(microBoardX, j + microBoardY + 1);
+                    return new Move(i + microBoardX, microBoardY + 1);
                 }
                 
                 //checking for winable squares in the diagonal lines
                 if(state.getField().getBoard()[microBoardX + 2][microBoardY].equals(player) &&
-                        state.getField().getBoard()[microBoardX][microBoardY + 2].equals(player))
+                        state.getField().getBoard()[microBoardX][microBoardY + 2].equals(player)&&
+                        state.getField().getBoard()[microBoardX + 1][microBoardY + 1].equals(IField.EMPTY_FIELD))
                 {
                     return new Move(microBoardX + 1,microBoardY + 1);
                 }
                 
                 if(state.getField().getBoard()[microBoardX][microBoardY].equals(player) &&
-                        state.getField().getBoard()[microBoardX + 2][microBoardY + 2].equals(player))
+                        state.getField().getBoard()[microBoardX + 2][microBoardY + 2].equals(player)&&
+                        state.getField().getBoard()[microBoardX + 1][j + microBoardY + 1].equals(IField.EMPTY_FIELD))
                 {
                     return new Move(microBoardX + 1, microBoardY + 1);
                 }
             }
         }
-        return state.getField().getAvailableMoves().get(0);
+        return null;
     }
+    
+    private IMove checkBlock(IGameState state)
+    {
+        String opponent = "" + ((state.getMoveNumber() + 1) % 2);
+        int microBoardX = getMacroBoardX(state) * 3;
+        int microBoardY = getMacroBoardY(state) * 3;
+        
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                //checking for winable squares in the X lines
+                if(state.getField().getBoard()[microBoardX][j + microBoardY].equals(opponent) &&
+                        state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(opponent) &&
+                        state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(IField.EMPTY_FIELD))
+                {
+                    return new Move(microBoardX + 2, j + microBoardY);
+                }
+                
+                if(state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(opponent) &&
+                        state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(opponent)&&
+                        state.getField().getBoard()[microBoardX][j + microBoardY].equals(IField.EMPTY_FIELD))
+                {
+                    return new Move(microBoardX, j + microBoardY);
+                }
+                
+                if(state.getField().getBoard()[microBoardX][j + microBoardY].equals(opponent) &&
+                        state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(opponent)&&
+                        state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(IField.EMPTY_FIELD))
+                {
+                    return new Move(microBoardX + 1, j + microBoardY);
+                }
+                
+                //checking for winable squares in the Y lines
+                if(state.getField().getBoard()[i + microBoardX][microBoardY].equals(opponent) &&
+                        state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(opponent)&&
+                        state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(IField.EMPTY_FIELD))
+                {
+                    return new Move(i + microBoardX, microBoardY + 2);
+                }
+                
+                if(state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(opponent) &&
+                        state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(opponent)&&
+                        state.getField().getBoard()[i + microBoardX][microBoardY].equals(IField.EMPTY_FIELD))
+                {
+                    return new Move(i + microBoardX, microBoardY);
+                }
+                
+                if(state.getField().getBoard()[i + microBoardX][microBoardY].equals(opponent) &&
+                        state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(opponent)&&
+                        state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(IField.EMPTY_FIELD))
+                {
+                    return new Move(i + microBoardX, microBoardY + 1);
+                }
+                
+                //checking for winable squares in the diagonal lines
+                if(state.getField().getBoard()[microBoardX + 2][microBoardY].equals(opponent) &&
+                        state.getField().getBoard()[microBoardX][microBoardY + 2].equals(opponent)&&
+                        state.getField().getBoard()[microBoardX + 1][microBoardY + 1].equals(IField.EMPTY_FIELD))
+                {
+                    return new Move(microBoardX + 1,microBoardY + 1);
+                }
+                
+                if(state.getField().getBoard()[microBoardX][microBoardY].equals(opponent) &&
+                        state.getField().getBoard()[microBoardX + 2][microBoardY + 2].equals(opponent)&&
+                        state.getField().getBoard()[microBoardX + 1][j + microBoardY + 1].equals(IField.EMPTY_FIELD))
+                {
+                    return new Move(microBoardX + 1, microBoardY + 1);
+                }
+            }
+        }
+        return null;
+    }
+
     
     private int getMacroBoardX(IGameState state)
     {
