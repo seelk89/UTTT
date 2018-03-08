@@ -27,7 +27,7 @@ public class BottyMcBotFace implements IBot
     
     private int[][] secondSet =
     {
-        {1, 0}, {2, 0}, {0, 0},    
+        {1, 0}, {1, 2}, {1, 1},    
     };
     
     private int[][] thirdSet =
@@ -37,7 +37,7 @@ public class BottyMcBotFace implements IBot
         
     private int[][] fourthSet =
     {
-        {0, 1}, {0, 2}, {0, 0}, 
+        {0, 1}, {2, 1}, {1, 1}, 
     };
                 
     private int[][] fifthSet =
@@ -49,7 +49,7 @@ public class BottyMcBotFace implements IBot
          
     private int[][] sixthSet =
     {
-        {2, 1}, {2, 0}, {2, 2},   
+        {2, 1}, {0, 1}, {1, 1},   
     };
     
     private int[][] seventhSet =
@@ -59,7 +59,7 @@ public class BottyMcBotFace implements IBot
     
     private int[][] eighthSet =
     {
-        {1, 2}, {2, 2}, {0, 2}, 
+        {1, 2}, {1, 0}, {1, 1}, 
     };
           
     private int[][] ninthSet =
