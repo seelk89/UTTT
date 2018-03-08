@@ -9,6 +9,8 @@ import dk.easv.bll.field.IField;
 import dk.easv.bll.game.IGameState;
 import dk.easv.bll.move.IMove;
 import dk.easv.bll.move.Move;
+import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -40,20 +42,22 @@ public class BottyMcBotFace implements IBot
         for (int[] move : preferredMovesFirstSet)
         {
             if (state.getField().getMacroboard()[move[0]][move[1]].equals(IField.AVAILABLE_FIELD))
-            {
-                int[][] set = preferredMovesFirstSet;
+            {  
+                //checking for winable squares
+                IMove winningMove = checkWin(state);
+                if(winningMove != null)
+                {
+                    return winningMove;
+                }    
                 
+                //checking for blockable wins
                 IMove blockingMove = checkBlock(state);
                 if(blockingMove != null)
                 {
                     return blockingMove;
                 }
                 
-                IMove winningMove = checkWin(state);
-                if(winningMove != null)
-                {
-                    return winningMove;
-                }    
+                int[][] set = preferredMovesFirstSet;
                 
                 if(state.getField().getMacroboard()[1][0].equals(IField.AVAILABLE_FIELD))
                 {
@@ -61,15 +65,23 @@ public class BottyMcBotFace implements IBot
                     System.out.println("Second set");
                 }
                 
-                //find move to play
-                for (int[] selectedMove : set)
+//                //find move to play in selected prioretised moves list
+//                for (int[] selectedMove : set)
+//                {
+//                    int x = move[0] * 3 + selectedMove[0];
+//                    int y = move[1] * 3 + selectedMove[1];
+//                    if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
+//                    {
+//                        return new Move(x, y);
+//                    }
+//                }
+                
+                //selects a random move if all ohter checks fail
+                Random rand = new Random();
+                List<IMove> moves = state.getField().getAvailableMoves();
+                if (moves.size() > 0) 
                 {
-                    int x = move[0] * 3 + selectedMove[0];
-                    int y = move[1] * 3 + selectedMove[1];
-                    if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
-                    {
-                        return new Move(x, y);
-                    }
+                    return moves.get(rand.nextInt(moves.size())); /* get random move from available moves */
                 }
             }
         } 
@@ -222,7 +234,6 @@ public class BottyMcBotFace implements IBot
         }
         return null;
     }
-
     
     private int getMacroBoardX(IGameState state)
     {
