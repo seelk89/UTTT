@@ -6,82 +6,112 @@ import dk.easv.bll.move.Move;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Field implements IField{
+public class Field implements IField
+{
 
     String[][] board = new String[9][9];
     String[][] macroBoard = new String[3][3];
 
-    public Field() {
+    public Field()
+    {
         clearBoard();
     }
 
     @Override
-    public void clearBoard() {
+    public void clearBoard()
+    {
         board = new String[9][9];
         for (int i = 0; i < board.length; i++)
-            for (int k = 0; k < board[i].length; k++) {
+        {
+            for (int k = 0; k < board[i].length; k++)
+            {
                 board[i][k] = EMPTY_FIELD;
             }
+        }
         for (int i = 0; i < macroBoard.length; i++)
-            for (int k = 0; k < macroBoard[i].length; k++) {
+        {
+            for (int k = 0; k < macroBoard[i].length; k++)
+            {
                 macroBoard[i][k] = AVAILABLE_FIELD;
             }
+        }
     }
 
     @Override
-    public List<IMove> getAvailableMoves() {
+    public List<IMove> getAvailableMoves()
+    {
         List<IMove> availMoves = new ArrayList<>();
 
         for (int i = 0; i < board.length; i++)
-            for (int k = 0; k < board[i].length; k++) {
-                if(isInActiveMicroboard(i,k) && board[i][k].equals(EMPTY_FIELD)) {
-                    availMoves.add(new Move(i,k));
+        {
+            for (int k = 0; k < board[i].length; k++)
+            {
+                if (isInActiveMicroboard(i, k) && board[i][k].equals(EMPTY_FIELD))
+                {
+                    availMoves.add(new Move(i, k));
                 }
+            }
         }
 
         return availMoves;
     }
 
     @Override
-    public String getPlayerId(int column, int row) {
+    public String getPlayerId(int column, int row)
+    {
         return board[column][row];
     }
 
     @Override
-    public boolean isEmpty() {
+    public boolean isEmpty()
+    {
         for (int i = 0; i < board.length; i++)
-            for (int k = 0; k < board[i].length; k++) {
-                if(board[i][k]!=EMPTY_FIELD && board[i][k]!=AVAILABLE_FIELD)
+        {
+            for (int k = 0; k < board[i].length; k++)
+            {
+                if (board[i][k] != EMPTY_FIELD && board[i][k] != AVAILABLE_FIELD)
+                {
                     return false;
+                }
             }
+        }
         return true;
     }
 
     @Override
-    public boolean isFull() {
+    public boolean isFull()
+    {
         for (int i = 0; i < board.length; i++)
-            for (int k = 0; k < board[i].length; k++) {
-                if(board[i][k]==EMPTY_FIELD || board[i][k]==AVAILABLE_FIELD)
+        {
+            for (int k = 0; k < board[i].length; k++)
+            {
+                if (board[i][k] == EMPTY_FIELD || board[i][k] == AVAILABLE_FIELD)
+                {
                     return false;
+                }
             }
+        }
         return true;
     }
 
     @Override
-    public Boolean isInActiveMicroboard(int x, int y) {
-        int xTrans = x>0 ? x/3 : 0;
-        int yTrans = y>0 ? y/3 : 0;
+    public Boolean isInActiveMicroboard(int x, int y)
+    {
+        int xTrans = x > 0 ? x / 3 : 0;
+        int yTrans = y > 0 ? y / 3 : 0;
         String value = macroBoard[xTrans][yTrans];
         return value.equals(AVAILABLE_FIELD);
     }
 
     @Override
-    public String[][] getBoard() {
+    public String[][] getBoard()
+    {
         return board;
     }
 
     @Override
-    public String[][] getMacroboard() {
+    public String[][] getMacroboard()
+    {
         return macroBoard;
     }
 
@@ -89,8 +119,10 @@ public class Field implements IField{
     public void setBoard(String[][] board)
     {
         //NOTE: Cloning here, for simulation purposes
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
                 this.board[i][j] = board[i][j];
             }
         }
@@ -100,10 +132,38 @@ public class Field implements IField{
     public void setMacroboard(String[][] macroboard)
     {
         //NOTE: Cloning here, for simulation purposes
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
                 this.macroBoard[i][j] = macroboard[i][j];
             }
         }
+    }
+
+    public String[][] setSimulationBoard()
+    {
+        String[][] simulationBoard = new String[9][9];
+        for (int i = 0; i < board.length; i++)
+        {
+            for (int j = 0; j < board.length; j++)
+            {
+                switch (board[i][j])
+                {
+                    case ".":
+                        simulationBoard[i][j] = ".";
+                        break;
+                    case GameManager.userMarker:
+                        simulationBoard[i][j] = userMarker;
+                        break;
+                    case GameManager.aiMarker:
+                        simulationBoard[i][j] = aiMarker;
+                        break;
+                }
+
+            }
+        }
+        this.winner = '-';
+        return simulationBoard;
     }
 }
