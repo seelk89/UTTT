@@ -14,358 +14,185 @@ import java.util.Random;
 
 /**
  *
- * @author Anni
+ * @author Jesper
  */
 public class BottyMcBotFace implements IBot
 {
-    private static final String BOTNAME = "GoatMeth";
+    private static final String BOTNAME = "BottyMcBotFace";
     // Moves {row, col} in order of preferences. {0, 0} at top-left corner
-    private int[][] preferredMovesASet =
+//    private int[][] preferredMovesFirstSet =
+//    {
+//        {0, 0}, {0, 1}, {1, 1},
+//        {0, 2}, {2, 0}, {2, 2}, 
+//        {2, 1}, {1, 0}, {1, 2}
+//    };
+//    
+//    private int[][] preferredMovesSecondSet =
+//    {
+//        {0, 0}, {2, 2}, {1, 1},
+//        {0, 2}, {2, 0}, {0, 1}, 
+//        {2, 1}, {1, 0}, {1, 2}
+//    };
+    
+    private int[][] firstSet =
     {
         {0, 0}, {2, 0}, {1, 0},
     };
     
-    private int[][] preferredMovesBSet =
+    private int[][] secondSet =
     {
         {1, 0}, {2, 0}, {0, 0},    
     };
     
-    private int[][] preferredMovesCSet =
+    private int[][] thirdSet =
     {
         {2, 0}, {2, 2}, {2, 1}, 
     };
         
-    private int[][] preferredMovesDSet =
+    private int[][] fourthSet =
     {
         {0, 1}, {0, 2}, {0, 0}, 
     };
-         
-            
-    private int[][] preferredMovesESet =
+                
+    private int[][] fifthSet =
     {
-        {1, 1},
-        {2, 2}, {0, 0}, 
-        {2, 0}, {0, 2},       
+        {1, 1}, {2, 2}, {0, 0}, 
+        {2, 0}, {0, 2}, {1, 0},
+        {0, 1}, {1, 2}, {2, 1},
     };
          
-    private int[][] preferredMovesFSet =
+    private int[][] sixthSet =
     {
         {2, 1}, {2, 0}, {2, 2},   
     };
     
-
-    private int[][] preferredMovesGSet =
+    private int[][] seventhSet =
     {
         {0, 2}, {0, 0}, {0, 1},          
     };                  
     
-    private int[][] preferredMovesHSet =
+    private int[][] eighthSet =
     {
         {1, 2}, {2, 2}, {0, 2}, 
     };
           
-    private int[][] preferredMovesISet =
+    private int[][] ninthSet =
     {
         {2, 2}, {0, 2}, {1, 2}, 
     };    
-   
     
+    private int[][] startMiddleSet =
+    {
+        {1, 1}
+    };
+
     @Override
     public IMove doMove(IGameState state)
     {
 
         //Find macroboard to play in
-//        for (int[] move : preferredMovesASet)
-//        {
-//            if (state.getField().getMacroboard()[move[0]][move[1]].equals(IField.AVAILABLE_FIELD))
-//            {
-                int[][] set = preferredMovesASet;
-
-                 if(state.getField().getMacroboard()[0][0].equals(IField.AVAILABLE_FIELD))
-                {
-                     IMove winningMove = checkWin(state);
+        for (int[] move : fifthSet)
+        {
+            if (state.getField().getMacroboard()[move[0]][move[1]].equals(IField.AVAILABLE_FIELD))
+            {  
+                //checking for winable squares
+                IMove winningMove = checkWinBlock(state, 0);
                 if(winningMove != null)
                 {
                     return winningMove;
                 }    
-
-                    set = preferredMovesASet;
-                    System.out.println("FirstA set");
-                    
-                 //checking for blockable wins
-                IMove blockingMove = checkBlock(state);
-                if(blockingMove != null)
-                {
-                    return blockingMove;
-                }    
-                    
-                 for (int[] selectedMove : set)
-                {
-                    int x = 0 * 3 + selectedMove[0];
-                    int y = 0 * 3 + selectedMove[1];
-                    if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
-                    {
-                        return new Move(x, y);
-                    }
-
-                }
-                }
+                
+                int[][] set = firstSet;
                 
                 if(state.getField().getMacroboard()[1][0].equals(IField.AVAILABLE_FIELD))
                 {
-                     IMove winningMove = checkWin(state);
-                if(winningMove != null)
-                {
-                    return winningMove;
-                }    
-                
-                
-                
-                    set = preferredMovesBSet;
-                    System.out.println("SecondB set");
-                    
-                //checking for blockable wins
-                IMove blockingMove = checkBlock(state);
-                if(blockingMove != null)
-                {
-                    return blockingMove;
-                }    
-                                     for (int[] selectedMove : set)
-                {
-                    int x = 1 * 3 + selectedMove[0];
-                    int y = 0 * 3 + selectedMove[1];
-                    if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
-                    {
-                        return new Move(x, y);
-                    }
-
-                 }
+                    set = secondSet;
+                    System.out.println("Second set");
                 }
-                 
+                
                 if(state.getField().getMacroboard()[2][0].equals(IField.AVAILABLE_FIELD))
                 {
-                    IMove winningMove = checkWin(state);
-                if(winningMove != null)
-                {
-                    return winningMove;
-                }    
-                
-                
-                    set = preferredMovesCSet;
-                    System.out.println("ThirdC set");
-                    
-                    //checking for blockable wins
-                IMove blockingMove = checkBlock(state);
-                if(blockingMove != null)
-                {
-                    return blockingMove;
+                    set = thirdSet;
+                    System.out.println("Third set");
                 }
                 
-                for (int[] selectedMove : set)
-                {
-                    int x = 2 * 3 + selectedMove[0];
-                    int y = 0 * 3 + selectedMove[1];
-                    if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
-                    {
-                        return new Move(x, y);
-                    }
-
-                   }
-                }
-                   
                 if(state.getField().getMacroboard()[0][1].equals(IField.AVAILABLE_FIELD))
-                { 
-                    IMove winningMove = checkWin(state);
-                if(winningMove != null)
                 {
-                    return winningMove;
-                }    
+                    set = fourthSet;
+                    System.out.println("Fourth set");
+                }
                 
-                
-                    set = preferredMovesDSet;
-                    System.out.println("FourthD set");
-                    
-                //checking for blockable wins
-                IMove blockingMove = checkBlock(state);
-                if(blockingMove != null)
-                {
-                    return blockingMove;
-                }    
-                
-                    for (int[] selectedMove : set)
-                {
-                    int x = 0 * 3 + selectedMove[0];
-                    int y = 1 * 3 + selectedMove[1];
-                    if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
-                    {
-                        return new Move(x, y);
-                    }
-
-                  }
-                }  
                 if(state.getField().getMacroboard()[1][1].equals(IField.AVAILABLE_FIELD))
                 {
-                     IMove winningMove = checkWin(state);
-                if(winningMove != null)
-                {
-                    return winningMove;
-                }    
-                
-                
-                    set = preferredMovesESet;
-                    System.out.println("FifthE set");
-                    
-                //checking for blockable wins
-                IMove blockingMove = checkBlock(state);
-                if(blockingMove != null)
-                {
-                    return blockingMove;
-                }    
-                                     for (int[] selectedMove : set)
-                {
-                    int x = 1 * 3 + selectedMove[0];
-                    int y = 1 * 3 + selectedMove[1];
-                    if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
-                    {
-                        return new Move(x, y);
-                    }
-
-                 }
+                    set = fifthSet;
+                    System.out.println("Fifth set");
                 }
-                  
+                
                 if(state.getField().getMacroboard()[2][1].equals(IField.AVAILABLE_FIELD))
                 {
-                     
-                IMove winningMove = checkWin(state);
-                if(winningMove != null)
-                {
-                    return winningMove;
-                }    
-                
-                
-                    set = preferredMovesFSet;
-                    System.out.println("SixthF set");
-                //checking for blockable wins
-                IMove blockingMove = checkBlock(state);
-                if(blockingMove != null)
-                {
-                    return blockingMove;
-                }                    
-                
-                for (int[] selectedMove : set)
-                {
-                    int x = 2 * 3 + selectedMove[0];
-                    int y = 1 * 3 + selectedMove[1];
-                    if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
-                    {
-                        return new Move(x, y);
-                    }
-
-               }
+                    set = sixthSet;
+                    System.out.println("Sixth set");
                 }
-                   
+                
                 if(state.getField().getMacroboard()[0][2].equals(IField.AVAILABLE_FIELD))
                 {
-                     IMove winningMove = checkWin(state);
-                if(winningMove != null)
-                {
-                    return winningMove;
-                }    
-                
-               
-                    set = preferredMovesGSet;
-                    System.out.println("SeventhG set");
-                 //checking for blockable wins
-                IMove blockingMove = checkBlock(state);
-                if(blockingMove != null)
-                {
-                    return blockingMove;
-                }   
-                    for (int[] selectedMove : set)
-                {
-                    int x = 0 * 3 + selectedMove[0];
-                    int y = 2 * 3 + selectedMove[1];
-                    if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
-                    {
-                        return new Move(x, y);
-                    }
-
-                  }
+                    set = seventhSet;
+                    System.out.println("Seventh set");
                 }
-                     
+                
                 if(state.getField().getMacroboard()[1][2].equals(IField.AVAILABLE_FIELD))
                 {
-                     IMove winningMove = checkWin(state);
-                if(winningMove != null)
-                {
-                    return winningMove;
-                }    
+                    set = eighthSet;
+                    System.out.println("Eighth set");
+                }
                 
-               
-                    set = preferredMovesHSet;
-                    System.out.println("EightH set");
-                   //checking for blockable wins
-                IMove blockingMove = checkBlock(state);
-                if(blockingMove != null)
-                {
-                    return blockingMove;
-                }      
-                for (int[] selectedMove : set)
-                {
-                    int x = 1 * 3 + selectedMove[0];
-                    int y = 2 * 3 + selectedMove[1];
-                    if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
-                    {
-                        return new Move(x, y);
-                    }
-
-                }
-                }
-                       
                 if(state.getField().getMacroboard()[2][2].equals(IField.AVAILABLE_FIELD))
                 {
-                     IMove winningMove = checkWin(state);
-                if(winningMove != null)
-                {
-                    return winningMove;
-                }    
-                
-                
-                    set = preferredMovesISet;
-                    System.out.println("NinthI set");
-                    
-                    //checking for blockable wins
-                IMove blockingMove = checkBlock(state);
-                if(blockingMove != null)
-                {
-                    return blockingMove;
+                    set = ninthSet;
+                    System.out.println("Ninth set");
                 }
-                 
+                
+                //in case the bot starts, use this set
+                if(state.getMoveNumber() == 0)
+                {
+                    set = startMiddleSet ;
+                    System.out.println("Start middle");
+                }
+                
+                //find move to play in selected prioretised moves list
                 for (int[] selectedMove : set)
                 {
-                    int x = 2 * 3 + selectedMove[0];
-                    int y = 2 * 3 + selectedMove[1];
+                    int x = move[0] * 3 + selectedMove[0];
+                    int y = move[1] * 3 + selectedMove[1];
                     if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
                     {
                         return new Move(x, y);
                     }
+                }
+                
+                //checking for blockable wins
+                IMove blockingMove = checkWinBlock(state, 1);
+                if(blockingMove != null)
+                {
+                    return blockingMove;
+                }
+                
                 //selects a random move if all ohter checks fail
                 Random rand = new Random();
                 List<IMove> moves = state.getField().getAvailableMoves();
-                  if (moves.size() > 0) 
-                    {
+                if (moves.size() > 0) 
+                {
                     return moves.get(rand.nextInt(moves.size())); /* get random move from available moves */
-                    }
                 }
-                }
-                        
+            }
+        } 
+        //NOTE: Something failed, just take the first available move I guess!
         return state.getField().getAvailableMoves().get(0);
     }
     
-    
-    private IMove checkWin(IGameState state)
+    private IMove checkWinBlock(IGameState state, int playerOfset)
     {
-        String player = "" + (state.getMoveNumber() % 2);
+        String player = "" + ((state.getMoveNumber() + playerOfset) % 2);
         int microBoardX = getMacroBoardX(state) * 3;
         int microBoardY = getMacroBoardY(state) * 3;
         
@@ -373,7 +200,7 @@ public class BottyMcBotFace implements IBot
         {
             for (int j = 0; j < 3; j++)
             {
-                //checking for winable squares in the X lines
+                //checking for winable/blockable squares in the X lines
                 if(state.getField().getBoard()[microBoardX][j + microBoardY].equals(player) &&
                         state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(player) &&
                         state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(IField.EMPTY_FIELD))
@@ -395,7 +222,7 @@ public class BottyMcBotFace implements IBot
                     return new Move(microBoardX + 1, j + microBoardY);
                 }
                 
-                //checking for winable squares in the Y lines
+                //checking for winable/blockable squares in the Y lines
                 if(state.getField().getBoard()[i + microBoardX][microBoardY].equals(player) &&
                         state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(player)&&
                         state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(IField.EMPTY_FIELD))
@@ -417,7 +244,7 @@ public class BottyMcBotFace implements IBot
                     return new Move(i + microBoardX, microBoardY + 1);
                 }
                 
-                //checking for winable squares in the diagonal lines
+                //checking for winable/blockable squares in the diagonal lines
                 if(state.getField().getBoard()[microBoardX + 2][microBoardY].equals(player) &&
                         state.getField().getBoard()[microBoardX][microBoardY + 2].equals(player)&&
                         state.getField().getBoard()[microBoardX + 1][microBoardY + 1].equals(IField.EMPTY_FIELD))
@@ -427,79 +254,6 @@ public class BottyMcBotFace implements IBot
                 
                 if(state.getField().getBoard()[microBoardX][microBoardY].equals(player) &&
                         state.getField().getBoard()[microBoardX + 2][microBoardY + 2].equals(player)&&
-                        state.getField().getBoard()[microBoardX + 1][j + microBoardY + 1].equals(IField.EMPTY_FIELD))
-                {
-                    return new Move(microBoardX + 1, microBoardY + 1);
-                }
-            }
-        }
-        return null;
-    }
-    
-    private IMove checkBlock(IGameState state)
-    {
-        String opponent = "" + ((state.getMoveNumber() + 1) % 2);
-        int microBoardX = getMacroBoardX(state) * 3;
-        int microBoardY = getMacroBoardY(state) * 3;
-        
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                //checking for blockable squares in the X lines
-                if(state.getField().getBoard()[microBoardX][j + microBoardY].equals(opponent) &&
-                        state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(opponent) &&
-                        state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(IField.EMPTY_FIELD))
-                {
-                    return new Move(microBoardX + 2, j + microBoardY);
-                }
-                
-                if(state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(opponent) &&
-                        state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(opponent)&&
-                        state.getField().getBoard()[microBoardX][j + microBoardY].equals(IField.EMPTY_FIELD))
-                {
-                    return new Move(microBoardX, j + microBoardY);
-                }
-                
-                if(state.getField().getBoard()[microBoardX][j + microBoardY].equals(opponent) &&
-                        state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(opponent)&&
-                        state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(IField.EMPTY_FIELD))
-                {
-                    return new Move(microBoardX + 1, j + microBoardY);
-                }
-                
-                //checking for blockable squares in the Y lines
-                if(state.getField().getBoard()[i + microBoardX][microBoardY].equals(opponent) &&
-                        state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(opponent)&&
-                        state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(IField.EMPTY_FIELD))
-                {
-                    return new Move(i + microBoardX, microBoardY + 2);
-                }
-                
-                if(state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(opponent) &&
-                        state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(opponent)&&
-                        state.getField().getBoard()[i + microBoardX][microBoardY].equals(IField.EMPTY_FIELD))
-                {
-                    return new Move(i + microBoardX, microBoardY);
-                }
-                
-                if(state.getField().getBoard()[i + microBoardX][microBoardY].equals(opponent) &&
-                        state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(opponent)&&
-                        state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(IField.EMPTY_FIELD))
-                {
-                    return new Move(i + microBoardX, microBoardY + 1);
-                }
-                
-                //checking for blockable squares in the diagonal lines
-                if(state.getField().getBoard()[microBoardX + 2][microBoardY].equals(opponent) &&
-                        state.getField().getBoard()[microBoardX][microBoardY + 2].equals(opponent)&&
-                        state.getField().getBoard()[microBoardX + 1][microBoardY + 1].equals(IField.EMPTY_FIELD))
-                {
-                    return new Move(microBoardX + 1,microBoardY + 1);
-                }
-                
-                if(state.getField().getBoard()[microBoardX][microBoardY].equals(opponent) &&
-                        state.getField().getBoard()[microBoardX + 2][microBoardY + 2].equals(opponent)&&
                         state.getField().getBoard()[microBoardX + 1][j + microBoardY + 1].equals(IField.EMPTY_FIELD))
                 {
                     return new Move(microBoardX + 1, microBoardY + 1);
