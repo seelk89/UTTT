@@ -18,25 +18,11 @@ import java.util.Random;
  */
 public class BottyMcBotFace implements IBot
 {
-    private static final String BOTNAME = "BottyMcBotFace";
-    // Moves {row, col} in order of preferences. {0, 0} at top-left corner
-//    private int[][] preferredMovesFirstSet =
-//    {
-//        {0, 0}, {0, 1}, {1, 1},
-//        {0, 2}, {2, 0}, {2, 2}, 
-//        {2, 1}, {1, 0}, {1, 2}
-//    };
-//    
-//    private int[][] preferredMovesSecondSet =
-//    {
-//        {0, 0}, {2, 2}, {1, 1},
-//        {0, 2}, {2, 0}, {0, 1}, 
-//        {2, 1}, {1, 0}, {1, 2}
-//    };
+    private static final String BOTNAME = "goatMeth";
     
     private int[][] firstSet =
     {
-        {0, 0}, {2, 0}, {1, 0},
+        {0, 0}, {2, 0}, {0, 2},
     };
     
     private int[][] secondSet =
@@ -46,7 +32,7 @@ public class BottyMcBotFace implements IBot
     
     private int[][] thirdSet =
     {
-        {2, 0}, {2, 2}, {2, 1}, 
+        {2, 0}, {2, 2}, {0, 0}, 
     };
         
     private int[][] fourthSet =
@@ -68,7 +54,7 @@ public class BottyMcBotFace implements IBot
     
     private int[][] seventhSet =
     {
-        {0, 2}, {0, 0}, {0, 1},          
+        {0, 2}, {0, 0}, {2, 2},          
     };                  
     
     private int[][] eighthSet =
@@ -78,7 +64,7 @@ public class BottyMcBotFace implements IBot
           
     private int[][] ninthSet =
     {
-        {2, 2}, {0, 2}, {1, 2}, 
+        {2, 2}, {0, 2}, {2, 0}, 
     };    
     
     private int[][] startMiddleSet =
@@ -89,7 +75,6 @@ public class BottyMcBotFace implements IBot
     @Override
     public IMove doMove(IGameState state)
     {
-
         //Find macroboard to play in
         for (int[] move : fifthSet)
         {
@@ -101,6 +86,13 @@ public class BottyMcBotFace implements IBot
                 {
                     return winningMove;
                 }    
+                
+                //checking for blockable wins
+                IMove blockingMove = checkWinBlock(state, 1);
+                if(blockingMove != null)
+                {
+                    return blockingMove;
+                }
                 
                 int[][] set = firstSet;
                 
@@ -168,13 +160,6 @@ public class BottyMcBotFace implements IBot
                     {
                         return new Move(x, y);
                     }
-                }
-                
-                //checking for blockable wins
-                IMove blockingMove = checkWinBlock(state, 1);
-                if(blockingMove != null)
-                {
-                    return blockingMove;
                 }
                 
                 //selects a random move if all ohter checks fail
