@@ -65,16 +65,16 @@ public class BottyMcBotFace implements IBot
                     System.out.println("Second set");
                 }
                 
-//                //find move to play in selected prioretised moves list
-//                for (int[] selectedMove : set)
-//                {
-//                    int x = move[0] * 3 + selectedMove[0];
-//                    int y = move[1] * 3 + selectedMove[1];
-//                    if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
-//                    {
-//                        return new Move(x, y);
-//                    }
-//                }
+                //find move to play in selected prioretised moves list
+                for (int[] selectedMove : set)
+                {
+                    int x = move[0] * 3 + selectedMove[0];
+                    int y = move[1] * 3 + selectedMove[1];
+                    if (state.getField().getBoard()[x][y].equals(IField.EMPTY_FIELD))
+                    {
+                        return new Move(x, y);
+                    }
+                }
                 
                 //selects a random move if all ohter checks fail
                 Random rand = new Random();
@@ -172,7 +172,7 @@ public class BottyMcBotFace implements IBot
         {
             for (int j = 0; j < 3; j++)
             {
-                //checking for winable squares in the X lines
+                //checking for blockable squares in the X lines
                 if(state.getField().getBoard()[microBoardX][j + microBoardY].equals(opponent) &&
                         state.getField().getBoard()[microBoardX + 1][j + microBoardY].equals(opponent) &&
                         state.getField().getBoard()[microBoardX + 2][j + microBoardY].equals(IField.EMPTY_FIELD))
@@ -194,7 +194,7 @@ public class BottyMcBotFace implements IBot
                     return new Move(microBoardX + 1, j + microBoardY);
                 }
                 
-                //checking for winable squares in the Y lines
+                //checking for blockable squares in the Y lines
                 if(state.getField().getBoard()[i + microBoardX][microBoardY].equals(opponent) &&
                         state.getField().getBoard()[i + microBoardX][microBoardY + 1].equals(opponent)&&
                         state.getField().getBoard()[i + microBoardX][microBoardY + 2].equals(IField.EMPTY_FIELD))
@@ -216,7 +216,7 @@ public class BottyMcBotFace implements IBot
                     return new Move(i + microBoardX, microBoardY + 1);
                 }
                 
-                //checking for winable squares in the diagonal lines
+                //checking for blockable squares in the diagonal lines
                 if(state.getField().getBoard()[microBoardX + 2][microBoardY].equals(opponent) &&
                         state.getField().getBoard()[microBoardX][microBoardY + 2].equals(opponent)&&
                         state.getField().getBoard()[microBoardX + 1][microBoardY + 1].equals(IField.EMPTY_FIELD))
