@@ -65,6 +65,8 @@ public class BottyMcBotFace implements IBot
                     System.out.println("Second set");
                 }
                 
+                System.out.println(state.getMoveNumber());
+                
                 //find move to play in selected prioretised moves list
                 for (int[] selectedMove : set)
                 {
