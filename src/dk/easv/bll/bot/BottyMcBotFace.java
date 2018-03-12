@@ -18,7 +18,7 @@ import java.util.Random;
  */
 public class BottyMcBotFace implements IBot
 {
-    private static final String BOTNAME = "goatMeth";
+    private static final String BOTNAME = "bottyMcBotButt";
     
     private int[][] firstSet =
     {
